@@ -50,4 +50,30 @@ function image_processing_gui
         imshow(equalized_img, 'Parent', ax);
         title('直方图均衡化');
     end
+% 对比度增强（线性变换和非线性变换）
+    function contrast_enhance(~, ~)
+        if isempty(img)
+            errordlg('请先加载图像！');
+            return;
+        end
+        gray_img = rgb2gray(img);
+        % 线性变换（imadjust）
+        enhanced_img = imadjust(gray_img);
+        imshow(enhanced_img, 'Parent', ax);
+        title('对比度增强');
+    end
+
+    % 图像旋转
+    function rotate_image(~, ~)
+        if isempty(img)
+            errordlg('请先加载图像！');
+            return;
+        end
+        angle = inputdlg('请输入旋转角度：', '旋转角度', [1, 50], {'45'});
+        angle = str2double(angle{1});
+        rotated_img = imrotate(img, angle);
+        imshow(rotated_img, 'Parent', ax);
+        title('旋转后的图像');
+    end
 end
+
