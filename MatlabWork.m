@@ -75,5 +75,52 @@ function image_processing_gui
         imshow(rotated_img, 'Parent', ax);
         title('旋转后的图像');
     end
+% 图像加噪（噪声类型可以选择）
+    function add_noise(~, ~)
+        if isempty(img)
+            errordlg('请先加载图像！');
+            return;
+        end
+        noise_type = questdlg('选择噪声类型', '噪声类型', 'Gaussian', 'Salt & Pepper', 'Speckle', 'Gaussian');
+        noisy_img = imnoise(img, noise_type);
+        imshow(noisy_img, 'Parent', ax);
+        title('加噪后的图像');
+    end
+
+    % 边缘检测（Sobel、Prewitt等）
+    function edge_detection(~, ~)
+        if isempty(img)
+            errordlg('请先加载图像！');
+            return;
+        end
+        gray_img = rgb2gray(img);
+        edge_img = edge(gray_img, 'sobel');
+        imshow(edge_img, 'Parent', ax);
+        title('边缘检测');
+    end
+
+    % 特征提取（LBP 和 HOG）
+    function feature_extraction(~, ~)
+        if isempty(img)
+            errordlg('请先加载图像！');
+            return;
+        end
+        gray_img = rgb2gray(img);
+        
+        % LBP 特征提取
+        lbp_features = extractLBPFeatures(gray_img);
+        disp('LBP 特征:');
+        disp(lbp_features);
+
+        % HOG 特征提取
+        [hog_features, visualized_hog] = extractHOGFeatures(gray_img);
+        disp('HOG 特征:');
+        disp(hog_features);
+
+        % 显示 HOG 特征图像
+        figure;
+        imshow(visualized_hog);
+        title('HOG 特征');
+    end
 end
 
