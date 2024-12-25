@@ -11,7 +11,6 @@ function image_processing_gui
     uicontrol('Style', 'pushbutton', 'String', '图像加噪', 'Position', [50, 300, 100, 30], 'Callback', @add_noise);
     uicontrol('Style', 'pushbutton', 'String', '边缘检测', 'Position', [50, 250, 100, 30], 'Callback', @edge_detection);
     uicontrol('Style', 'pushbutton', 'String', '提取特征', 'Position', [50, 200, 100, 30], 'Callback', @feature_extraction);
-    uicontrol('Style', 'pushbutton', 'String', '图像分类', 'Position', [50, 150, 100, 30], 'Callback', @image_classification);
 
     % 图像显示区域
     ax = axes('Parent', fig, 'Position', [0.3, 0.1, 0.6, 0.8]);
@@ -39,7 +38,8 @@ function image_processing_gui
         imhist(gray_img);
         title('灰度直方图');
     end
-% 直方图均衡化
+
+    % 直方图均衡化
     function hist_eq(~, ~)
         if isempty(img)
             errordlg('请先加载图像！');
@@ -50,7 +50,8 @@ function image_processing_gui
         imshow(equalized_img, 'Parent', ax);
         title('直方图均衡化');
     end
-% 对比度增强（线性变换和非线性变换）
+
+    % 对比度增强（线性变换和非线性变换）
     function contrast_enhance(~, ~)
         if isempty(img)
             errordlg('请先加载图像！');
@@ -75,7 +76,8 @@ function image_processing_gui
         imshow(rotated_img, 'Parent', ax);
         title('旋转后的图像');
     end
-% 图像加噪（噪声类型可以选择）
+
+    % 图像加噪（噪声类型可以选择）
     function add_noise(~, ~)
         if isempty(img)
             errordlg('请先加载图像！');
@@ -100,27 +102,30 @@ function image_processing_gui
     end
 
     % 特征提取（LBP 和 HOG）
-    function feature_extraction(~, ~)
-        if isempty(img)
-            errordlg('请先加载图像！');
-            return;
-        end
-        gray_img = rgb2gray(img);
-        
-        % LBP 特征提取
-        lbp_features = extractLBPFeatures(gray_img);
-        disp('LBP 特征:');
-        disp(lbp_features);
-
-        % HOG 特征提取
-        [hog_features, visualized_hog] = extractHOGFeatures(gray_img);
-        disp('HOG 特征:');
-        disp(hog_features);
-
-        % 显示 HOG 特征图像
-        figure;
-        imshow(visualized_hog);
-        title('HOG 特征');
+function feature_extraction(~, ~)
+    if isempty(img)
+        errordlg('请先加载图像！');
+        return;
     end
+    gray_img = rgb2gray(img);
+    
+    % LBP 特征提取
+    lbp_features = extractLBPFeatures(gray_img);
+    disp('LBP 特征:');
+    disp(lbp_features);
+
+    % HOG 特征提取
+    [hog_features, visualized_hog] = extractHOGFeatures(gray_img);
+    disp('HOG 特征:');
+    disp(hog_features);
+
+    % 显示 HOG 特征图像
+    figure;
+    imshow(gray_img); % 显示原始灰度图像
+    hold on;
+    plot(visualized_hog); % 绘制 HOG 可视化特征
+    hold off;
+    title('HOG 特征');
 end
 
+end
